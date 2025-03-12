@@ -1,7 +1,19 @@
 defmodule SvelteDemoWeb.SvelteLive do
   use SvelteDemoWeb, :live_view
 
+  defp subscribe() do
+    Phoenix.PubSub.subscribe(SvelteDemo.PubSub, "counter")
+  end
+
+  defp broadcast(value) do
+    Phoenix.PubSub.broadcast(SvelteDemo.PubSub, "counter", value)
+  end
+
   def mount(_params, _session, socket) do
+    if connected?(socket) do
+      subscribe()
+    end
+
     {:ok, assign(socket, counter: 0)}
   end
 
@@ -13,22 +25,31 @@ defmodule SvelteDemoWeb.SvelteLive do
         {@counter}
       </h1>
 
-      <button phx-click="increment">Increment</button>
-      <button phx-click="decrement">Decrement</button>
-      <button phx-click="reset">Reset</button>
+      <div class="flex justify-center items-center gap-12 mt-12 text-3xl">
+        <button phx-click="increment">Increment</button>
+        <button phx-click="decrement">Decrement</button>
+        <button phx-click="reset">Reset</button>
+      </div>
     </div>
     """
   end
 
   def handle_event("increment", _unsigned_params, socket) do
-    {:noreply, assign(socket, counter: socket.assigns.counter + 1)}
+    broadcast({:counter, socket.assigns.counter + 1})
+    {:noreply, socket}
   end
 
   def handle_event("decrement", _unsigned_params, socket) do
-    {:noreply, assign(socket, counter: socket.assigns.counter - 1)}
+    broadcast({:counter, socket.assigns.counter - 1})
+    {:noreply, socket}
   end
 
   def handle_event("reset", _unsigned_params, socket) do
-    {:noreply, assign(socket, counter: 0)}
+    broadcast({:counter, 0})
+    {:noreply, socket}
+  end
+
+  def handle_info({:counter, counter}, socket) do
+    {:noreply, assign(socket, counter: counter)}
   end
 end
