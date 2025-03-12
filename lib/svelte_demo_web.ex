@@ -82,6 +82,9 @@ defmodule SvelteDemoWeb do
 
   defp html_helpers do
     quote do
+      # Svelte
+      import LiveSvelte
+
       # Translation
       use Gettext, backend: SvelteDemoWeb.Gettext
 
