@@ -18,6 +18,8 @@ defmodule SvelteDemoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/svelte", SvelteLive
   end
 
   # Other scopes may use custom stacks.
