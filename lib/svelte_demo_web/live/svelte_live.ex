@@ -9,6 +9,7 @@ defmodule SvelteDemoWeb.SvelteLive do
     Phoenix.PubSub.broadcast(SvelteDemo.PubSub, "counter", value)
   end
 
+  @spec mount(any(), any(), Phoenix.LiveView.Socket.t()) :: {:ok, any()}
   def mount(_params, _session, socket) do
     if connected?(socket) do
       subscribe()
@@ -20,7 +21,7 @@ defmodule SvelteDemoWeb.SvelteLive do
   @spec render(any()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <.svelte name="Counter" props={%{counter: @counter}} />
+    <.svelte name="counter" props={%{counter: @counter}} />
     """
   end
 
