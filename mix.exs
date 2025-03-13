@@ -42,7 +42,7 @@ defmodule SvelteDemo.MixProject do
       {:phoenix_live_view, "~> 1.0.0"},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
-      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
+      # {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
@@ -84,7 +84,7 @@ defmodule SvelteDemo.MixProject do
       "assets.build": ["tailwind svelte_demo", "esbuild svelte_demo"],
       "assets.deploy": [
         "tailwind svelte_demo --minify",
-        "esbuild svelte_demo --minify",
+        # "esbuild svelte_demo --minify",
         "cmd --cd assets node build.js --deploy",
         "phx.digest"
       ]
